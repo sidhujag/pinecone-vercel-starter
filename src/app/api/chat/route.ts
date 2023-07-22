@@ -23,12 +23,11 @@ export async function POST(req: Request) {
     const opt: ContextOptions = {
       getOnlyText: true,
       minScore: 0.7,
-      maxTokens: 3000,
+      maxTokens: 7000,
+      numChunks: 5,
       namespace: ''
     };    
     const context = await getContext(lastMessage.content, opt)
-
-
     const prompt = [
       {
         role: 'system',
@@ -48,7 +47,6 @@ export async function POST(req: Request) {
       `,
       },
     ]
-
     // Ask OpenAI for a streaming chat completion given the prompt
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
