@@ -12,6 +12,7 @@ interface SeedOptions {
   splittingMethod: string
   chunkSize: number
   chunkOverlap: number
+  namespace: string
 }
 
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter
@@ -46,7 +47,7 @@ async function seed(url: string, limit: number, indexName: string, options: Seed
     const vectors = await Promise.all(documents.flat().map(embedDocument));
 
     // Upsert vectors into the Pinecone index
-    await chunkedUpsert(index!, vectors, '', 10);
+    await chunkedUpsert(index!, vectors, options.namespace, 10);
 
     // Return the first document
     return documents[0];
